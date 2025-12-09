@@ -86,9 +86,9 @@ export default function CalorieCounter() {
                     className="w-full border rounded-lg p-2 border-black text-gray-700"
                 >
                     <option value="">Gender</option>
-                    {genderSelection.map((lvl) => (
-                        <option key={lvl.label} value={lvl.label}>
-                            {lvl.label}
+                    {genderSelection.map((chc) => ( 
+                        <option key={chc.label} value={chc.label}>
+                            {chc.label}
                         </option>
                     ))}
                 </select>

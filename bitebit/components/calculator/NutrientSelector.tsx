@@ -1,50 +1,88 @@
-import { useState } from "react";
-
 interface NutrientSelectorProps {
-  onChange: (selected: string[]) => void;
+  selected: string[];
+  onChange: (v: string[]) => void;
+  dailyCalorie: string;
+  setDailyCalorie: (v: string) => void;
+  savedCalorie: number | null;
+  setSavedCalorie: (v: number | null) => void;
 }
 
-//set nutrient choices 
 const nutrients = [
-  { key: "kcal", label: "Calories (kcal)" },
+  { key: "calories", label: "Calories (kcal)" },
   { key: "protein", label: "Protein (g)" },
   { key: "sugar", label: "Sugar (g)" },
   { key: "fiber", label: "Fiber (g)" }
-]
+];
 
-export default function NutrientSelector({ onChange }: NutrientSelectorProps) {
-  const [selected, setSelected] = useState<string[]>([]);
+export default function NutrientSelector({
+  selected,
+  onChange,
+  dailyCalorie,
+  setDailyCalorie,
+  savedCalorie,
+  setSavedCalorie
+}: NutrientSelectorProps) {
 
-  const tgl = (key: string) => {
-    let updated = [];
+  const toggle = (key: string) => {
+    const updated = selected.includes(key)
+      ? selected.filter(x => x !== key)
+      : [...selected, key];
 
-    if (selected.includes(key)) {
-      updated = selected.filter((i) => i !== key);
-    } else {
-      updated = [...selected, key]
-    }
-
-    setSelected(updated);
-    onChange(updated); // send to parent
+    onChange(updated);
   };
 
   return (
-    <div className="p-4 border rounded-xl bg-white shadow-sm">
-      <h2 className="text-lg font-semibold mb-3 text-black">Choose Nutrients to Track</h2>
+    <div className="p-4 border rounded-xl bg-white shadow-sm flex flex-col">
 
-      <div className="grid grid-cols-2 gap-3">
-        {nutrients.map((n) => (
-          <label
-            key={n.key}
-            className="flex items-center gap-2 cursor-pointer select-none"
+      <h2 className="font-semibold text-center mb-3">Daily Calorie Goal</h2>
+
+      <input
+        type="number"
+        value={dailyCalorie}
+        onChange={(e) => setDailyCalorie(e.target.value)}
+        disabled={savedCalorie !== null}
+        className="border rounded-lg p-2 w-[50%] disabled:bg-gray-200 text-gray-700 m-auto"
+        placeholder="Enter calories"
+      />
+
+      <div className="mt-3 text-center">
+        {savedCalorie === null ? (
+          <button
+            onClick={() => {
+              if (!dailyCalorie) return alert("Enter calories");
+              setSavedCalorie(Number(dailyCalorie));
+            }}
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg"
           >
+            Save
+          </button>
+        ) : (
+          <button
+            onClick={() => {
+              setSavedCalorie(null);
+              setDailyCalorie("");
+            }}
+            className="px-4 py-2 bg-red-600 text-white rounded-lg"
+          >
+            Reset
+          </button>
+        )}
+      </div>
+
+      <h2 className="font-semibold text-center mt-6 mb-3">
+        Nutrients to Track
+      </h2>
+
+      <div className="flex">
+        {nutrients.map((n) => (
+          <label key={n.key} className="flex items-center justify-center ">
             <input
               type="checkbox"
               checked={selected.includes(n.key)}
-              onChange={() => tgl(n.key)}
-              className="w-4 h-4"
+              onChange={() => toggle(n.key)}
+              className="w-[50px]"
             />
-            <span className="text-black">{n.label}</span>
+            {n.label}
           </label>
         ))}
       </div>
