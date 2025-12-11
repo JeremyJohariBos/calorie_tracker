@@ -8,7 +8,7 @@ export default function MealTrackerSection() {
   const [showMeals, setShowMeals] = useState(false);
 
   return (
-    <div className="max-w-xl mx-auto mt-6">
+    <div className="max-w-xl mx-auto mt-6 flex">
       
       <BodyTracker
         onShowMeals={() => setShowMeals(true)}

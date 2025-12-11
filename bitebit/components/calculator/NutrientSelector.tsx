@@ -41,7 +41,7 @@ export default function NutrientSelector({
         value={dailyCalorie}
         onChange={(e) => setDailyCalorie(e.target.value)}
         disabled={savedCalorie !== null}
-        className="border rounded-lg p-2 w-[50%] disabled:bg-gray-200 text-gray-700 m-auto"
+        className="border rounded-lg p-2 w-full disabled:bg-gray-200 text-gray-700 m-auto"
         placeholder="Enter calories"
       />
 
@@ -73,7 +73,7 @@ export default function NutrientSelector({
         Nutrients to Track
       </h2>
 
-      <div className="flex">
+      <div className="flex flex-wrap">
         {nutrients.map((n) => (
           <label key={n.key} className="flex items-center justify-center ">
             <input
